@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Patua+One&family=Rock+Salt&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Connections — Christmas Edition</title>
+  <style>
+    :root{
+      --page:#f4f2ee;
+      --ink:#121212;
+      --muted:#6b6b6b;
+
+      --tile:#efede9;
+      --tile-border:#d9d6d0;
+      --tile-hover:#e7e4de;
+      --tile-selected:#b9c9ff;
+
+      --bar-yellow:#f7d34a;
+      --bar-green:#a6e3a1;
+      --bar-blue:#9cc6ff;
+      --bar-purple:#d0b3ff;
+
+      --shadow: 0 1px 0 rgba(0,0,0,.06);
+      --shadow2: 0 6px 18px rgba(0,0,0,.08);
+      --radius: 10px;
+
+
+      --intro-bg:#b9b2ff;
+      --intro-ink:#111;
+      --intro-sub:#1b1b1b;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      background: var(--page);
+      color: var(--ink);
+      font-family:
+        "Nunito",
+        "Quicksand",
+        "Avenir Next Rounded",
+        "Arial Rounded MT Bold",
+        ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    /* INTRO */
+    .intro{
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--intro-bg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 24px;
+    }
+    .introCard{
+      width: min(720px, 100%);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      gap: 14px;
+    }
+
+    .introIcon{
+      width: 66px;
+      height: 66px;
+      display:grid;
+      place-items:center;
+    }
+    .mosaic{
+      width: 64px;
+      height: 64px;
+      border-radius: 10px;
+      border: 4px solid #111;
+      background: #fff;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 3px;
+      padding: 6px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+    }
+    .sq{ border-radius: 3px; background:#7a3fc2; }
+    .sq.w{ background:#fff; border: 2px solid #111; }
+    .sq.p{ background:#b14ed8; }
+    .sq.m{ background:#8a4bd1; }
+
+    .introTitle{
+      margin:0;
+      font-size: 48px;
+      font-weight: 1000;
+      letter-spacing: .2px;
+      text-transform:none;
+      color: var(--intro-ink);
+      font-family: ui-sans-serif, system-ui;
+    }
+
+    .introSubtitle{
+      margin:0;
+      font-size: 18px;
+      line-height: 1.35;
+      text-transform:none;
+      letter-spacing:.2px;
+      color: var(--intro-sub);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .playBtn{
+      margin-top: 6px;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      background: #111;
+      padding: 14px 44px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .6px;
+      text-transform:none;
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+      transition: transform .08s ease, opacity .2s ease;
+    }
+    .playBtn:hover{ transform: translateY(-1px); }
+    .playBtn:active{ transform: translateY(0); opacity: .92; }
+
+    .introMeta{
+      margin-top: 6px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      color:#111;
+      font-family: ui-sans-serif, system-ui;
+      text-transform:none;
+      letter-spacing:.2px;
+    }
+    .introMeta .date{ font-weight: 800; }
+    .introMeta .small{ font-size: 13px; opacity: .9; }
+
+    .intro.hide{ animation: fadeOut 280ms ease forwards; }
+    @keyframes fadeOut{ to{ opacity: 0; visibility: hidden; } }
+
+    .page{ min-height:100vh; }
+
+    .nyt-header{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width:100%;
+      background: #fff;
+      border-bottom: 1px solid #e2e2e2;
+      transition: box-shadow 220ms ease;
+    }
+    .nyt-inner{
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      padding: 12px 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-family: Georgia, "Times New Roman", serif;
+      text-transform:none;
+      letter-spacing: 0;
+      gap:12px;
+    }
+    .nyt-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#111;
+      min-width: 0;
+    }
+    .hamburger{
+      font-size: 22px;
+      line-height: 1;
+      cursor:pointer;
+      user-select:none;
+    }
+    .nyt-logo{
+      font-family: "Rock Salt", cursive;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing:.2px;
+      user-select:none;
+    }
+    .nyt-games{
+      font-weight: 700;
+      font-size: 22px;
+      white-space: nowrap;
+       font-family: "Patua One", serif;
+    }
+
+    .nyt-right{ flex: 0 0 auto; position: relative; }
+    .nyt-right .upgrade{
+      font-family: ui-sans-serif, system-ui;
+      font-size: 13px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border:1px solid #111;
+      background:#fff;
+      cursor:pointer;
+      box-shadow: var(--shadow);
+      white-space: nowrap;
+    }
+
+    .umma-pop{
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      background: rgba(18,18,18,.92);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-family: ui-sans-serif, system-ui;
+      font-weight: 400;
+      letter-spacing: .8px;
+      text-transform: lowercase;
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
+      opacity: 0;
+      transform: translateY(-6px) scale(.92);
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+    .umma-pop.show{
+      animation: popUmma 900ms ease forwards;
+    }
+    @keyframes popUmma{
+      0%   { opacity: 0; transform: translateY(-8px) scale(.92); }
+      18%  { opacity: 1; transform: translateY(0) scale(1.03); }
+      35%  { opacity: 1; transform: translateY(0) scale(1); }
+      80%  { opacity: 1; transform: translateY(-1px) scale(1); }
+      100% { opacity: 0; transform: translateY(-8px) scale(.96); }
+    }
+
+    .connections-header{
+      position: sticky;
+      top: 54px;
+      z-index: 40;
+      width:100%;
+      background: var(--page);
+      border-bottom: 1px solid #e6e6e6;
+      transition: background 220ms ease, box-shadow 220ms ease;
+    }
+    .connections-inner{
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      padding: 22px 12px 14px;
+      display:flex;
+      align-items:baseline;
+      gap:14px;
+      text-transform:none;
+      letter-spacing: 0;
+      flex-wrap: wrap;
+    }
+    .connections-title{
+      margin:0;
+      font-size: 38px;
+      font-weight: 900;
+      font-family: ui-sans-serif, system-ui;
+      text-transform:none;
+    }
+    .connections-date{
+      font-size: 20px;
+      color:#555;
+      font-family: ui-sans-serif, system-ui;
+      text-transform:none;
+    }
+
+    .nyt-header.shrink{ box-shadow: 0 8px 22px rgba(0,0,0,.08); }
+    .connections-header.shrink{
+      box-shadow: 0 10px 26px rgba(0,0,0,.06);
+      background: #f7f5f2;
+    }
+    .connections-header.shrink .connections-inner{ padding: 14px 12px 10px; }
+    .connections-header.shrink .connections-title{ font-size: 30px; }
+    .connections-header.shrink .connections-date{ font-size: 18px; }
+
+    .wrap{
+      width: min(690px, 100%);
+      margin: 22px auto 0;
+      padding: 0 12px 22px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .subtext{
+      margin: 18px 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      text-transform:none;
+      font-family: ui-sans-serif, system-ui;
+      letter-spacing:.2px;
+      text-align:center;
+    }
+
+    .solved{
+      width: 100%;
+      display:grid;
+      gap:10px;
+      margin: 6px 0 14px;
+    }
+
+    .bar{
+      border-radius: 12px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      transition: transform 220ms ease, opacity 220ms ease;
+    }
+    .bar.enter{ transform: translateY(10px); opacity: 0; }
+    .bar.enterActive{ transform: translateY(0); opacity: 1; }
+
+    .barTitle{
+      font-weight: 900;
+      letter-spacing:.9px;
+      font-size: 12px;
+    }
+    .barTiles{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      font-size: 15px;
+      font-weight: 850;
+      line-height:1.2;
+    }
+    .barTiles span{ opacity:.92; }
+
+    .grid{
+      width: 100%;
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap:10px;
+    }
+
+    .tile{
+      background: var(--tile);
+      border: 1px solid var(--tile-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      height: 58px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding: 10px;
+      cursor:pointer;
+      user-select:none;
+      font-weight: 900;
+      letter-spacing:.7px;
+      transition: transform .06s ease, background .12s ease, box-shadow .12s ease;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tile:hover{
+      background: var(--tile-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow2);
+    }
+    .tile.selected{
+      background: var(--tile-selected);
+      border-color: rgba(0,0,0,.12);
+    }
+
+    .grid.shake .tile{ animation: shake 350ms ease; }
+    @keyframes shake{
+      0%{ transform: translateX(0); }
+      20%{ transform: translateX(-6px); }
+      40%{ transform: translateX(6px); }
+      60%{ transform: translateX(-4px); }
+      80%{ transform: translateX(4px); }
+      100%{ transform: translateX(0); }
+    }
+
+    .mistakes{
+      width: 100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin: 16px 0 4px;
+      color: var(--muted);
+      font-size: 13px;
+      text-transform:none;
+      font-family: ui-sans-serif, system-ui;
+      letter-spacing:.2px;
+      text-align:center;
+      flex-wrap: wrap;
+    }
+    .dots{ display:flex; gap:8px; align-items:center; }
+    .dot{
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #1f1f1f;
+      opacity: .25;
+    }
+    .dot.on{ opacity: 1; }
+
+    .controls{
+      width: 100%;
+      display:flex;
+      justify-content:center;
+      margin: 14px 0 8px;
+    }
+    .btnRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      width: 100%;
+    }
+
+    button{
+      appearance:none;
+      border:none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 900;
+      cursor:pointer;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.12);
+      box-shadow: var(--shadow);
+      transition: transform .06s ease, box-shadow .12s ease;
+      letter-spacing:.7px;
+      text-transform: uppercase;
+      font-family: inherit;
+    }
+    button:hover{ transform: translateY(-1px); box-shadow: var(--shadow2); }
+    button:disabled{ opacity:.45; cursor:not-allowed; transform:none; box-shadow: var(--shadow); }
+
+    .msg{
+      width: 100%;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size:13px;
+      min-height: 20px;
+      text-align:center;
+      text-transform:none;
+      font-family: ui-sans-serif, system-ui;
+      letter-spacing:.2px;
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(18,18,18,.92);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing:.8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 160ms ease, transform 160ms ease;
+      z-index: 100;
+      max-width: calc(100vw - 24px);
+      text-align:center;
+      text-transform: uppercase;
+    }
+    .toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .reveal{
+      width: 100%;
+      display:none;
+      margin-top: 14px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow2);
+      text-transform:none;
+      font-family: ui-sans-serif, system-ui;
+      letter-spacing:.2px;
+    }
+    .reveal h2{
+      margin:0 0 6px;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing:.6px;
+    }
+    .reveal p{ margin:0; color: var(--ink); line-height:1.45; text-transform:none; }
+
+    @media (max-width: 640px){
+      .grid{ grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
+      .wrap{ width: 100%; padding: 0 8px 18px; margin-top: 14px; }
+      .tile{ height: 52px; padding: 8px 6px; font-size: 11px; letter-spacing: .4px; }
+
+      .btnRow{ gap: 8px; }
+      button{ padding: 11px 12px; min-width: 0; font-size: 12px; }
+
+      .nyt-inner{ padding: 10px 10px; }
+      .nyt-games{ font-size: 20px; }
+      .nyt-right .upgrade{ font-size: 12px; padding: 6px 10px; }
+
+      .connections-header{ top: 50px; }
+      .connections-inner{ padding: 18px 10px 12px; }
+      .connections-title{ font-size: 32px; }
+      .connections-date{ font-size: 16px; }
+
+      .connections-header.shrink .connections-inner{ padding: 12px 10px 10px; }
+      .connections-header.shrink .connections-title{ font-size: 26px; }
+      .connections-header.shrink .connections-date{ font-size: 15px; }
+
+      .introTitle{ font-size: 40px; }
+      .introSubtitle{ font-size: 16px; }
+      .playBtn{ width: min(320px, 100%); }
+    }
+
+    @media (max-width: 420px){
+      .tile{ height: 48px; font-size: 10px; letter-spacing: .35px; padding: 7px 5px; }
+      .nyt-right .upgrade{ display:none; }
+      .grid{ gap: 6px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .nyt-header, .connections-header, .tile, button, .toast, .bar, .intro, .umma-pop { transition:none !important; }
+      .grid.shake .tile{ animation:none !important; }
+      .intro.hide{ animation:none !important; opacity:0; visibility:hidden; }
+      .umma-pop.show{ animation:none !important; opacity:1; transform:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="intro" id="intro">
+    <div class="introCard">
+      <div class="introIcon" aria-hidden="true">
+        <div class="mosaic">
+          <div class="sq p"></div><div class="sq"></div><div class="sq w"></div><div class="sq m"></div>
+          <div class="sq"></div><div class="sq w"></div><div class="sq m"></div><div class="sq"></div>
+          <div class="sq w"></div><div class="sq m"></div><div class="sq"></div><div class="sq p"></div>
+          <div class="sq m"></div><div class="sq"></div><div class="sq p"></div><div class="sq w"></div>
+        </div>
+      </div>
+
+      <h1 class="introTitle">Connections</h1>
+      <p class="introSubtitle">Group words that share a common thread.</p>
+
+      <button class="playBtn" id="playBtn" type="button">Play</button>
+
+      <div class="introMeta">
+        <div class="date" id="introDate">December 25, 2025</div>
+        <div class="small" id="introNo">No. 924</div>
+        <div class="small" id="introBy">By Rhea</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    
+    <header class="nyt-header" id="nytHeader">
+      <div class="nyt-inner">
+        <div class="nyt-left">
+          <span class="hamburger" aria-hidden="true">☰</span>
+          <span class="nyt-logo" aria-hidden="true">RP</span>
+          <span class="nyt-games">Games</span>
+        </div>
+        <div class="nyt-right">
+          <button class="upgrade" id="upgradeBtn" type="button">Upgrade subscription</button>
+          <div class="umma-pop" id="ummaPop" aria-hidden="true">umma! 😙</div>
+        </div>
+      </div>
+    </header>
+
+    
+    <header class="connections-header" id="connHeader">
+      <div class="connections-inner">
+        <h2 class="connections-title">Connections</h2>
+        <span class="connections-date" id="headerDate">December 21, 2025</span>
+      </div>
+    </header>
+
+
+    <div class="wrap">
+      <div class="subtext">Create four groups of four!</div>
+
+      <div class="solved" id="solvedArea"></div>
+      <div class="grid" id="grid"></div>
+
+      <div class="mistakes">
+        <span>Mistakes Remaining:</span>
+        <div class="dots" id="dots"></div>
+      </div>
+
+      <div class="controls">
+        <div class="btnRow">
+          <button id="shuffleBtn" type="button">Shuffle</button>
+          <button id="clearBtn" type="button">Deselect All</button>
+          <button id="submitBtn" type="button" disabled>Submit</button>
+        </div>
+      </div>
+
+      <div class="msg" id="message">Select 4 tiles, then submit.</div>
+
+      <div class="reveal" id="reveal">
+        <h2>Message unlocked</h2>
+        <p id="revealText"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Toast</div>
+
+  <script>
+    
+    const PUZZLE_DATE = "December 25, 2025";
+    const PUZZLE_NO = "No. 136";
+    const PUZZLE_BY = "By Rhea";
+
+    const FINAL_MESSAGE = `
+      Merry Christmas!️
+      <br><br>
+      Something something something
+      <br>
+      PS: Something something something
+    `;
+
+    const GROUPS = [
+      { id:"hotSauceBrands", name:"Mexican Hot Sauce Brands", color:"yellow", tiles:["Cholula","Valentina","El Yucateco","Tapatío"] },
+      { id:"cheeses", name:"Types of cheese", color:"green", tiles:["Cheddar","Gouda","Brie","Feta"] },
+      { id:"cheeseBoard", name:"Cheese board staples", color:"blue", tiles:["Crackers","Grapes","Honey","Nuts"] },
+      { id:"youAndMe", name:"Not sure yet", color:"purple", tiles:["1","2","3","4"] },
+    ];
+
+    const MAX_ATTEMPTS = 4;
+
+    
+    const introEl = document.getElementById("intro");
+    const playBtn = document.getElementById("playBtn");
+
+    const introDateEl = document.getElementById("introDate");
+    const introNoEl = document.getElementById("introNo");
+    const introByEl = document.getElementById("introBy");
+    const headerDateEl = document.getElementById("headerDate");
+
+    const nytHeader = document.getElementById("nytHeader");
+    const connHeader = document.getElementById("connHeader");
+
+    const gridEl = document.getElementById("grid");
+    const submitBtn = document.getElementById("submitBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const shuffleBtn = document.getElementById("shuffleBtn");
+    const messageEl = document.getElementById("message");
+    const solvedAreaEl = document.getElementById("solvedArea");
+    const revealEl = document.getElementById("reveal");
+    const revealTextEl = document.getElementById("revealText");
+    const toastEl = document.getElementById("toast");
+    const dotsEl = document.getElementById("dots");
+
+    
+    const upgradeBtn = document.getElementById("upgradeBtn");
+    const ummaPop = document.getElementById("ummaPop");
+
+    const COLOR_MAP = {
+      yellow: getComputedStyle(document.documentElement).getPropertyValue("--bar-yellow"),
+      green:  getComputedStyle(document.documentElement).getPropertyValue("--bar-green"),
+      blue:   getComputedStyle(document.documentElement).getPropertyValue("--bar-blue"),
+      purple: getComputedStyle(document.documentElement).getPropertyValue("--bar-purple")
+    };
+
+   
+    let attemptsLeft = MAX_ATTEMPTS;
+    let selected = new Set();
+    const solvedGroups = new Set();
+
+    const ALL_TILES = GROUPS.flatMap(g => g.tiles.map(text => ({ text, groupId: g.id })));
+    let tilesState = []; 
+    let toastTimer = null;
+
+    
+    function shuffleArray(arr){
+      const a = arr.slice();
+      for (let i=a.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function setMessage(text){ messageEl.textContent = text; }
+
+    function showToast(text){
+      toastEl.textContent = String(text).toUpperCase();
+      toastEl.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1100);
+    }
+
+    function shakeGrid(){
+      gridEl.classList.add("shake");
+      setTimeout(() => gridEl.classList.remove("shake"), 380);
+    }
+
+    function renderDots(){
+      dotsEl.innerHTML = "";
+      for (let i=0; i<MAX_ATTEMPTS; i++){
+        const d = document.createElement("div");
+        d.className = "dot";
+        if (i < attemptsLeft) d.classList.add("on");
+        dotsEl.appendChild(d);
+      }
+    }
+
+    function renderGrid(){
+      const visible = tilesState.filter(t => !t.solved);
+      gridEl.innerHTML = "";
+
+      visible.forEach(t => {
+        const el = document.createElement("div");
+        el.className = "tile";
+        el.textContent = t.text.toUpperCase();
+        el.title = t.text;
+
+        el.addEventListener("click", () => toggleSelect(t.text));
+        if (selected.has(t.text)) el.classList.add("selected");
+
+        gridEl.appendChild(el);
+      });
+    }
+
+    function renderSolved(){
+      solvedAreaEl.innerHTML = "";
+
+      GROUPS.forEach(g => {
+        if (!solvedGroups.has(g.id)) return;
+
+        const bar = document.createElement("div");
+        bar.className = "bar enter";
+        bar.style.background = (COLOR_MAP[g.color] || "#eee").trim();
+
+        const title = document.createElement("div");
+        title.className = "barTitle";
+        title.textContent = g.name.toUpperCase();
+
+        const tiles = document.createElement("div");
+        tiles.className = "barTiles";
+        g.tiles.forEach(txt => {
+          const s = document.createElement("span");
+          s.textContent = txt.toUpperCase();
+          tiles.appendChild(s);
+        });
+
+        bar.appendChild(title);
+        bar.appendChild(tiles);
+        solvedAreaEl.appendChild(bar);
+
+        requestAnimationFrame(() => {
+          bar.classList.add("enterActive");
+          bar.classList.remove("enter");
+        });
+      });
+    }
+
+    function syncButtons(){
+      submitBtn.disabled = selected.size !== 4 || attemptsLeft <= 0;
+      clearBtn.disabled = selected.size === 0;
+      shuffleBtn.disabled = attemptsLeft <= 0;
+    }
+
+    function toggleSelect(text){
+      const t = tilesState.find(x => x.text === text);
+      if (!t || t.solved) return;
+
+      if (selected.has(text)) selected.delete(text);
+      else {
+        if (selected.size >= 4) return;
+        selected.add(text);
+      }
+      renderGrid();
+      syncButtons();
+    }
+
+    function deselect(){
+      selected.clear();
+      renderGrid();
+      syncButtons();
+      setMessage("Deselected.");
+    }
+
+    function shuffleUnsolved(){
+      const solved = tilesState.filter(t => t.solved);
+      const unsolved = tilesState.filter(t => !t.solved);
+      tilesState = solved.concat(shuffleArray(unsolved));
+
+      selected.clear();
+      renderGrid();
+      syncButtons();
+      setMessage("Shuffled.");
+    }
+
+    function checkWin(){
+      if (solvedGroups.size === GROUPS.length){
+        revealTextEl.innerHTML = FINAL_MESSAGE.trim();
+        revealEl.style.display = "block";
+        showToast("You solved it!");
+        setMessage("You solved it!");
+
+        submitBtn.disabled = true;
+        clearBtn.disabled = true;
+        shuffleBtn.disabled = true;
+      }
+    }
+
+    function submit(){
+      if (selected.size !== 4 || attemptsLeft <= 0) return;
+
+      const picks = Array.from(selected);
+      const pickedTiles = tilesState.filter(t => picks.includes(t.text));
+      const groupIds = new Set(pickedTiles.map(t => t.groupId));
+
+      if (groupIds.size === 1){
+        const gid = [...groupIds][0];
+        if (solvedGroups.has(gid)){
+          showToast("Already solved");
+          deselect();
+          return;
+        }
+
+        solvedGroups.add(gid);
+        tilesState = tilesState.map(t => picks.includes(t.text) ? {...t, solved:true} : t);
+
+        selected.clear();
+        renderSolved();
+        renderGrid();
+        syncButtons();
+        showToast("You got it!");
+        setMessage("You got it!");
+        checkWin();
+        return;
+      }
+
+      const counts = {};
+      pickedTiles.forEach(t => counts[t.groupId] = (counts[t.groupId]||0) + 1);
+      const maxSame = Math.max(...Object.values(counts));
+
+      attemptsLeft -= 1;
+      renderDots();
+
+      if (maxSame === 3){
+        showToast("So close! Only one away.");
+        setMessage("So close! Only one away.");
+      } else {
+        showToast("No!");
+        setMessage("No!");
+      }
+
+      shakeGrid();
+      selected.clear();
+      renderGrid();
+      syncButtons();
+
+      if (attemptsLeft <= 0){
+        showToast("You lost ): Refresh to try again!");
+        setMessage("You lost ): Refresh to try again!");
+      }
+    }
+
+    
+    function setupHeaderAnimation(){
+      let ticking = false;
+      const threshold = 36;
+
+      function onScroll(){
+        if (ticking) return;
+        ticking = true;
+
+        requestAnimationFrame(() => {
+          const y = window.scrollY || 0;
+          const shouldShrink = y > threshold;
+          nytHeader.classList.toggle("shrink", shouldShrink);
+          connHeader.classList.toggle("shrink", shouldShrink);
+          ticking = false;
+        });
+      }
+      window.addEventListener("scroll", onScroll, { passive:true });
+      onScroll();
+    }
+
+    
+    function setupIntro(){
+      introDateEl.textContent = PUZZLE_DATE;
+      introNoEl.textContent = PUZZLE_NO;
+      introByEl.textContent = PUZZLE_BY;
+      headerDateEl.textContent = PUZZLE_DATE;
+
+      const start = () => {
+        introEl.classList.add("hide");
+        setTimeout(() => {
+          introEl.style.display = "none";
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        }, 290);
+      };
+
+      playBtn.addEventListener("click", start);
+      playBtn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") start();
+      });
+    }
+
+   
+    function setupUmma(){
+      if (!upgradeBtn || !ummaPop) return;
+
+      upgradeBtn.addEventListener("click", (e) => {
+       
+        e.preventDefault();
+
+        
+        ummaPop.classList.remove("show");
+        
+        void ummaPop.offsetWidth;
+        ummaPop.classList.add("show");
+      });
+    }
+
+    function initGame(){
+      attemptsLeft = MAX_ATTEMPTS;
+      solvedGroups.clear();
+      selected.clear();
+      tilesState = shuffleArray(ALL_TILES).map(t => ({...t, solved:false}));
+
+      revealEl.style.display = "none";
+      revealTextEl.innerHTML = "";
+      setMessage("Select 4 tiles, then submit.");
+
+      renderDots();
+      renderSolved();
+      renderGrid();
+      syncButtons();
+      setupHeaderAnimation();
+      setupIntro();
+      setupUmma();
+    }
+
+    submitBtn.addEventListener("click", submit);
+    clearBtn.addEventListener("click", deselect);
+    shuffleBtn.addEventListener("click", shuffleUnsolved);
+
+    initGame();
+  </script>
+</body>
+</html>
