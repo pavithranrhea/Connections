@@ -4,7 +4,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Patua+One&family=Rock+Salt&display=swap" rel="stylesheet">
-  <meta charset="UTF-8" />
+<link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">  
+<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Connections — Christmas Edition</title>
   <style>
@@ -16,7 +17,7 @@
       --tile:#efede9;
       --tile-border:#d9d6d0;
       --tile-hover:#e7e4de;
-      --tile-selected:#b9c9ff;
+      --tile-selected:#e3d2ff;
 
       --bar-yellow:#f7d34a;
       --bar-green:#a6e3a1;
@@ -185,9 +186,10 @@
       user-select:none;
     }
     .nyt-logo{
-      font-family: "Rock Salt", cursive;
-      font-weight: 900;
-      font-size: 18px;
+      font-family: "Monoton", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+      font-size: 28px;
       letter-spacing:.2px;
       user-select:none;
     }
@@ -623,22 +625,20 @@
   <script>
     
     const PUZZLE_DATE = "December 25, 2025";
-    const PUZZLE_NO = "No. 136";
+    const PUZZLE_NO = "No. 36";
     const PUZZLE_BY = "By Rhea";
 
     const FINAL_MESSAGE = `
-      Merry Christmas!️
+      No more connections left to make - you're already my favorite one <3
       <br><br>
-      Something something something
-      <br>
-      PS: Something something something
+      Merry Christmas my love! I'm so grateful for you and I love you. Here's to so many more! 
     `;
 
     const GROUPS = [
-      { id:"hotSauceBrands", name:"Mexican Hot Sauce Brands", color:"yellow", tiles:["Cholula","Valentina","El Yucateco","Tapatío"] },
-      { id:"cheeses", name:"Types of cheese", color:"green", tiles:["Cheddar","Gouda","Brie","Feta"] },
-      { id:"cheeseBoard", name:"Cheese board staples", color:"blue", tiles:["Crackers","Grapes","Honey","Nuts"] },
-      { id:"youAndMe", name:"Not sure yet", color:"purple", tiles:["1","2","3","4"] },
+      { id:"hotSauceBrands", name:"Something you put on tacos", color:"yellow", tiles:["Cholula","Valentina","El Yucateco","Tapatío"] },
+      { id:"cheeses", name:"Cheese you see on a charcuterie board", color:"green", tiles:["Cheddar","Gouda","Brie","Feta"] },
+      { id:"cheeseBoard", name:"Types of Mushrooms", color:"blue", tiles:["Morel","Enoki","Porcini","Oyster"] },
+      { id:"youAndMe", name:"Date Activites", color:"purple", tiles:["Bowling","Axe Throwing","Sipping","Ice Skating"] },
     ];
 
     const MAX_ATTEMPTS = 4;
