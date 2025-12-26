@@ -8,6 +8,7 @@
 <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Connections — Christmas Edition</title>
+  <link rel="icon" type="image/RP-icon" href="images/RP.png">
   <style>
     :root{
       --page:#f4f2ee;
@@ -112,8 +113,18 @@
       text-transform:none;
       letter-spacing:.2px;
       color: var(--intro-sub);
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: ui-sans-serif, system-ui;
     }
+
+   .logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.rp-logo {
+  height: 32px; 
+  width: auto;
+}
 
     .playBtn{
       margin-top: 6px;
@@ -573,8 +584,13 @@
       <div class="nyt-inner">
         <div class="nyt-left">
           <span class="hamburger" aria-hidden="true">☰</span>
-          <span class="nyt-logo" aria-hidden="true">RP</span>
-          <span class="nyt-games">Games</span>
+          <a href="index.html" class="logo-link" aria-label="RP Games">
+  <img
+    src="images/RPGames_logo.png"
+    alt="RP Games"
+    class="rp-logo"
+  />
+</a>
         </div>
         <div class="nyt-right">
           <button class="upgrade" id="upgradeBtn" type="button">Upgrade subscription</button>
@@ -638,7 +654,7 @@
       { id:"hotSauceBrands", name:"Something you put on tacos", color:"yellow", tiles:["Cholula","Valentina","El Yucateco","Tapatío"] },
       { id:"cheeses", name:"Cheese you see on a charcuterie board", color:"green", tiles:["Cheddar","Gouda","Brie","Feta"] },
       { id:"cheeseBoard", name:"Types of Mushrooms", color:"blue", tiles:["Morel","Enoki","Porcini","Oyster"] },
-      { id:"youAndMe", name:"Date Activites", color:"purple", tiles:["Bowling","Axe Throwing","Sipping","Ice Skating"] },
+      { id:"youAndMe", name:"Date Activites", color:"purple", tiles:["Bowling","Axe Throwing","Painting","Ice Skating"] },
     ];
 
     const MAX_ATTEMPTS = 4;
